@@ -1,7 +1,13 @@
 const { merge } = require('webpack-merge');
+const webpack = require('webpack');
+const path = require('path');
 const commonConfig = require('./common');
 
-module.exports = merge(commonConfig('development'), {
+module.exports = merge(commonConfig, {
+    mode: "development",
+    devtool: 'eval-cheap-module-source-map',
+    // stats: "errors-only", //只在发生错误或有新的编译时输出
+    target: 'web',
     optimization: {
         minimize: false,
         minimizer: [],
@@ -11,11 +17,20 @@ module.exports = merge(commonConfig('development'), {
         },
     },
     devServer: {
-        contentBase: './dist',
+        injectClient: true,
         port: '3000',
         hot: true,
         open: true,
-        noInfo: true,
-    }
+        inline:true,
+        // historyApiFallback: true,
+        contentBase: path.resolve(__dirname, './dist'),
+        publicPath: '/',
+        watchOptions: {
+            ignored: ['**/node_modules'],
+        },
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ],
 })
 
