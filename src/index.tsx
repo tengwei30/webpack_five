@@ -1,20 +1,21 @@
-// eslint-disable-next-line no-use-before-define
-import * as React from 'react';
-import { render } from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import Routes from './Routes';
+import store, { history } from './store'
 import 'antd/dist/antd.css';
-import { DatePicker } from 'antd';
+import './styles/index.css';
 
-interface iProps {
-    children: string
-}
+ReactDOM.render(
+    <React.StrictMode>
+        <Provider store={store}>
+            <ConnectedRouter history={history}>
+                <Routes />
+            </ConnectedRouter>
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
+);
 
-const App = (props: iProps) => {
-    return (
-        <>
-            <h1>{props.children}</h1>
-            <DatePicker />
-        </>
-    );
-};
 
-render(<App>hello Webpack5 TypeScript!</App>, document.getElementById('root'));

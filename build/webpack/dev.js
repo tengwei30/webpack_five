@@ -22,7 +22,7 @@ module.exports = merge(commonConfig, {
         hot: true,
         open: true,
         inline:true,
-        // historyApiFallback: true,
+        historyApiFallback: true,
         contentBase: path.resolve(__dirname, './dist'),
         publicPath: '/',
         watchOptions: {
