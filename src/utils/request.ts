@@ -1,38 +1,91 @@
-import axios from "axios";
-// import qs from "qs";
-// import router from "../router";
-// import store from "../store";
+/**
+ * 封装 axios 请求， 请求只能在 services/ 调用
+ *
+ * */
 
-const request = axios.create({
-    // 配置选项
-    // baseURL,
-    // timeout
-});
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import qs, { ParsedQuery } from 'query-string';
 
-// 请求拦截器
-request.interceptors.request.use(
-    function(config) {
-        // Do something before request is sent
-        return config;
-    },
-    function(error) {
-        // Do something with request error
-        return Promise.reject(error);
+
+const API_BASE_URL = process.env.NODE_ENV === 'development' ? '' : '';
+const TIMEOUT = 5000
+
+export interface AxiosConfig extends AxiosRequestConfig {
+    timeout?: number;
+    header?: { [key: string]: string };
+}
+
+const rAxios = axios.create();
+rAxios.defaults.timeout = TIMEOUT;
+rAxios.defaults.baseURL = API_BASE_URL;
+
+export const handleResponse = (response: AxiosResponse) => {
+    if (response?.status !== 200) {
+        throw new Error('网路请求错误');
     }
-);
-
-// 响应拦截器
-request.interceptors.response.use(
-    function(response) {
-        // 状态码为 2XX的都会走这
-        return response;
-    },
-    async function(error) {
-        // 状态码 非 2XX的走这
-        // console.dir("error --->",error)
-        // const { status } = error.response;
-        return Promise.reject(error);
+    if (response?.data?.code === 200) {
+        return response?.data?.datas;
     }
-);
+    throw new Error('网路请求错误');
+};
 
-export default request;
+export interface AxiosRequestCustomConfig {
+    headers?: object;
+    noStringify?: boolean;
+}
+
+export function transformData(data: any, config?: AxiosRequestConfig & AxiosRequestCustomConfig) {
+    if (config?.headers?.['Content-Type'] === 'application/json') {
+        return JSON.stringify(data);
+    }
+    return config && config.noStringify ? data : qs.stringify(data);
+}
+
+export const handleErrorResponse = (response: AxiosResponse) => {};
+
+export const get = (
+    url: string,
+    query: ParsedQuery,
+    options?: AxiosConfig | AxiosRequestConfig
+) => {
+    const { timeout = TIMEOUT } = options || {};
+    const realUrl = qs.stringifyUrl({ url, query });
+
+    return new Promise((resolve, reject) => {
+        axios
+            .get(realUrl, {
+                timeout
+            })
+            .then((resp: AxiosResponse) => {
+                const data = handleResponse(resp);
+                resolve(data);
+            })
+            .catch(() => {
+                const errorMsg = new Error('网络错误，请稍后重试');
+                reject(errorMsg);
+            });
+    });
+};
+
+export const post = (url: string, data: object, options?: AxiosConfig) => {
+    const { timeout = TIMEOUT, headers } = options || {};
+    const realData = transformData(data, options);
+
+    return new Promise((resolve, reject) => {
+        axios
+            .post(url, realData, {
+                timeout,
+                headers: {
+                    ...headers
+                }
+            })
+            .then((resp: AxiosResponse) => {
+                const data = handleResponse(resp);
+                resolve(data);
+            })
+            .catch(() => {
+                const errorMsg = new Error('网络错误，请稍后重试');
+                reject(errorMsg);
+            });
+    });
+};

@@ -46,6 +46,7 @@
     "prettier": "^2.3.2",
     "progress-bar-webpack-plugin": "^2.1.0",
     "qs": "^6.10.1",
+    "query-string": "^7.0.1",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.2.1",
     "stylelint": "^13.13.1",
