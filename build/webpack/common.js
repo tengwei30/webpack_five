@@ -46,6 +46,9 @@ const commonConfig = {
         exclude: /node_modules/,
         use: [
           {
+            loader: "babel-loader", // vue 的需要在ts-loader 前面添加babel-loader，因为tsjson中 "jsx" 设置成了 "preserve", 。否则 ts不会被转成 js
+          },
+          {
             loader: "ts-loader",
             options: babelOptions,
           },
