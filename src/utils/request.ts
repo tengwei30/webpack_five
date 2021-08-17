@@ -8,7 +8,7 @@ import qs, { ParsedQuery } from 'query-string';
 
 
 const API_BASE_URL = process.env.NODE_ENV === 'development' ? '' : '';
-const TIMEOUT = 5000
+const TIMEOUT = 5000;
 
 export interface AxiosConfig extends AxiosRequestConfig {
     timeout?: number;
@@ -41,7 +41,9 @@ export function transformData(data: any, config?: AxiosRequestConfig & AxiosRequ
     return config && config.noStringify ? data : qs.stringify(data);
 }
 
-export const handleErrorResponse = (response: AxiosResponse) => {};
+export const handleErrorResponse = (response: AxiosResponse) => {
+    console.log(response);
+};
 
 export const get = (
     url: string,

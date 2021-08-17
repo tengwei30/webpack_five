@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script>
+<script lang='ts'>
 import { defineComponent } from 'vue'
 import { Button } from 'ant-design-vue';
 export default defineComponent({

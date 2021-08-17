@@ -1,21 +1,21 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Home from "../views/home/index.vue";
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import Home from '../views/home/index.vue';
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: "/",
-        name: "Home",
+        path: '/',
+        name: 'Home',
         component: Home,
         meta: {
-            title: "", // 自定义对象
-        },
-    },
+            title: '' // 自定义对象
+        }
+    }
 
 ];
 
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes
 });
 
 router.beforeEach((to, from, next) => {
