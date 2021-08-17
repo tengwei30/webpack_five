@@ -21,7 +21,7 @@ module.exports = {
         sourceType: 'module',
         ecmaVersion: 6
     },
-    plugins: ['standard', 'promise', '@typescript-eslint', 'html', 'vue'],
+    plugins: ['@typescript-eslint', 'html', 'vue'],
     settings: {
         'import/ignore': ['node_modules']
     },
