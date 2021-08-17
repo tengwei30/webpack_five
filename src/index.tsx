@@ -1,20 +1,11 @@
-// eslint-disable-next-line no-use-before-define
-import * as React from 'react';
-import { render } from 'react-dom';
-import 'antd/dist/antd.css';
-import { DatePicker } from 'antd';
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+import "./styles/index.css";
 
-interface iProps {
-    children: string
-}
+const app = createApp(App);
 
-const App = (props: iProps) => {
-    return (
-        <>
-            <h1>{props.children}</h1>
-            <DatePicker />
-        </>
-    );
-};
-
-render(<App>hello Webpack5 TypeScript!</App>, document.getElementById('root'));
+app.use(router).use(store).use(Antd) .mount("#root");

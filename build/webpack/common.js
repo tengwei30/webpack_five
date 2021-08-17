@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader/dist/index');
 const paths = require("../paths");
 
 // 获取路径文件
@@ -49,6 +50,12 @@ const commonConfig = {
             options: babelOptions,
           },
         ],
+      },
+      {
+        test: /\.vue$/,
+        use: [
+          'vue-loader'
+        ]
       },
       {
         test: /\.css$/,
@@ -123,6 +130,7 @@ const commonConfig = {
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new ESLintPlugin(),
+    new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: isProductionMode
           ? `css/[id].[contenthash].css`
@@ -135,7 +143,7 @@ const commonConfig = {
     new HtmlWebpackPlugin({
       template: paths.appHtml,
       inject: 'body',
-      title: "React"
+      title: "Vue"
     }),
   ]
 }
