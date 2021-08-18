@@ -11,8 +11,8 @@ module.exports = {
     __dirname: true
   },
   parserOptions: {
-    // parser: require.resolve('@typescript-eslint/parser'),
-    parser: 'babel-eslint',
+    parser: require.resolve('@typescript-eslint/parser'),
+    // parser: 'babel-eslint',
     extraFileExtensions: ['.vue'],
     ecmaFeatures: {
       jsx: true,
