@@ -123,6 +123,9 @@ const commonConfig = {
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new ESLintPlugin(),
+    new webpack.ProvidePlugin({
+      React: 'react'
+    }),
     new MiniCssExtractPlugin({
       filename: isProductionMode
           ? `css/[id].[contenthash].css`
