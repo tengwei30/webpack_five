@@ -1,4 +1,4 @@
-const path = require("path");
+// const path = require('path');
 
 module.exports = {
     dev: {
@@ -7,9 +7,9 @@ module.exports = {
         // assetsSubDirectory: '/',
         assetsPublicPath: '/',
         host: 'localhost',
-        proxyTable: {},
+        proxyTable: {}
     },
     build: {
-        env: require('./prod.env'),
+        env: require('./prod.env')
     }
-}
+};

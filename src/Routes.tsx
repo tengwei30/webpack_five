@@ -5,7 +5,6 @@
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import Home from './views/home/';
 
-
 const Routes = () => {
     return (
         <HashRouter>

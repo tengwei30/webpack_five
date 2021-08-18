@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack server --config ./build/webpack/dev.js",
-    "build": "cross-env NODE_ENV=production webpack --config build/webpack/prod.js"
+    "build": "cross-env NODE_ENV=production webpack --config build/webpack/prod.js",
+    "format": "prettier --write './src/*.{ts,tsx,js,css,less}' ",
+    "precommit": "lint-staged"
   },
   "keywords": [],
   "author": "",
@@ -74,8 +76,7 @@
     "whatwg-fetch": "^3.6.2"
   },
   "pre-commit": [
-    "precommit",
-    "precommit-msg"
+    "precommit"
   ],
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
