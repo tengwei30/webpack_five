@@ -1,0 +1,22 @@
+doctype html
+html(lang="zh-cmn-Hans")
+  head
+    block metas
+      meta(charset="utf-8")
+      meta(name="format-detection", content="telephone=yes")
+      title #{title || '请叫我Ghost'}
+      meta(name="renderer" content="webkit")
+      meta(http-equiv="Cache-Control" content="no-siteapp")
+      link(rel="shortcut icon", href="//fine-house.oss-cn-beijing.aliyuncs.com/fav.ico")
+
+    if remlayout
+      block viewport
+        include ./viewport.pug
+        +viewport(375, 100, 750)
+    
+    block headerCSS
+    block headerJS
+
+  body(style="touch-action: manipulation")
+    #app
+    block footJS

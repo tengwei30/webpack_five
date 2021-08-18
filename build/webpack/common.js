@@ -56,6 +56,11 @@ const commonConfig = {
                 ]
             },
             {
+                test: /\.(pug|jade|tpl)$/,
+                loader: 'pug-loader',
+                options: {}
+            },
+            {
                 test: /\.css$/,
                 use: [
                     styleLoaderMode,

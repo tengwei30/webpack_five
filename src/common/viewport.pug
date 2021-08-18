@@ -1,0 +1,33 @@
+mixin viewport (designWidth, legend, maxWidth)
+  script.
+    (function (designWidth, legend, maxWidth) {
+      if (!document.querySelector('meta[name="viewport"]')) {
+        var content = 'initial-scale=1,maximum-scale=1,minimum-scale=1' +
+            ',user-scalable=no,width=device-width,viewport-fit=cover';
+        document.write('<meta name="viewport" content="' + content + '"/>');
+      }
+      var viewportWidth = Math.min(
+        document.documentElement.clientWidth || screen.availWidth,
+        maxWidth
+      );
+      var adjustFontSize = function () {
+        var fontSize = viewportWidth / designWidth * legend;
+        document.documentElement.style.fontSize = fontSize + 'px';
+      };
+      var reviseLegend = function () {
+        try {
+            var fontSize = viewportWidth / designWidth * legend;
+            var currentElementWidth = fontSize * 3.75;
+            if(currentElementWidth !== viewportWidth){
+                legend = legend * viewportWidth / currentElementWidth;
+                  adjustFontSize();
+            }
+        } catch (error) {
+            // 
+        }
+      };
+      adjustFontSize();
+      window.addEventListener('resize', adjustFontSize);
+      document.addEventListener('DOMContentLoaded', reviseLegend);
+      document.documentElement.setAttribute('data-dpr', Math.floor(window.devicePixelRatio));
+  })(#{designWidth}, #{legend}, #{maxWidth});
