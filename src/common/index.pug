@@ -3,16 +3,19 @@ html(lang="zh-cmn-Hans")
   head
     block metas
       meta(charset="utf-8")
-      meta(name="format-detection", content="telephone=yes")
-      title #{title || '请叫我Ghost'}
+      meta('http-equiv'="Content-Type" content="text/html; charset=utf-8")
+      meta(name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover")
+      meta(name="format-detection" content="telephone=no")
+      //- title #{title || '请叫我Ghost'}
       meta(name="renderer" content="webkit")
       meta(http-equiv="Cache-Control" content="no-siteapp")
       link(rel="shortcut icon", href="//fine-house.oss-cn-beijing.aliyuncs.com/fav.ico")
 
-    if remlayout
-      block viewport
-        include ./viewport.pug
-        +viewport(375, 100, 750)
+    block title
+
+    block viewport
+      include ./viewport.pug
+      +viewport(375, 100, 750)
     
     block headerCSS
     block headerJS

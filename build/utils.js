@@ -1,14 +1,19 @@
-import R from 'ramda';
-import path from 'path';
-import glob from 'glob';
-import yargs from 'yargs';
+// import R from 'ramda';
+// import path from 'path';
+// import glob from 'glob';
+// import yargs from 'yargs';
+
+const R = require('ramda');
+const path = require('path');
+const glob = require('glob');
+const yargs = require('yargs');
 
 function relname(base, fpath, ext = '') {
     const relpath = path.relative(base, fpath);
     return path.format({ name: path.dirname(relpath), ext });
 }
 
-export function resolveEntries(root, fileRegx) {
+function resolveEntries(root, fileRegx) {
     const fpaths = glob.sync(path.resolve(root, '**/*'));
     const tplPaths = fpaths.filter(p => fileRegx.tpl.test(p));
     const entryPaths = fpaths.filter(p => fileRegx.entry.test(p));
@@ -26,3 +31,5 @@ export function resolveEntries(root, fileRegx) {
 
     return entries.filter(entry => Boolean(entry.html) && filter.test(entry.name));
 }
+
+module.exports = resolveEntries;

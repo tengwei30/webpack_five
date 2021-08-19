@@ -18,7 +18,10 @@ export default defineComponent({
   }
 });
 </script>
-<style lang="stylus" rel="stylesheet/stylus">
-@import '../../styles/index.styl';
-@import './index.styl';
+<style lang="less">
+#home_test {
+  h2 {
+    font-size: 14px;
+  }
+}
 </style>

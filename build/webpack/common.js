@@ -3,7 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader/dist/index');
 const paths = require('../paths');
+const resolveEntries = require('../utils');
 
 // 获取路径文件
 const resolve = dir => {
@@ -16,12 +18,29 @@ const styleLoaderMode = isProductionMode ? MiniCssExtractPlugin.loader : 'style-
 // 关闭 ts 的类型检查，异步到插件去做，能提升打包速度
 const babelOptions = { transpileOnly: true };
 
+// 多页面配置规则
+const fileRegx = {
+    tpl: /[./]index\.pug$/,
+    entry: /[./]index\.tsx$/
+};
+
+// 配置多入口地址
+const entries = resolveEntries(paths.appPages, fileRegx);
+
 const commonConfig = {
     target: 'web',
-    entry: {
-        polyfills: resolve('src/polyfills'), // 对不支持ES6的浏览器进行支持
-        index: paths.appIndexJs
-    },
+    entry: entries.reduce(
+        (map, entry) => ({
+            ...map,
+            polyfills: resolve('src/polyfills'), // 对不支持ES6的浏览器进行支持
+            [entry.name]: [entry.path]
+        }),
+        {}
+    ),
+    // entry: {
+    //     polyfills: resolve('src/polyfills'), // 对不支持ES6的浏览器进行支持
+    //     index: paths.appIndexJs
+    // },
     output: {
         path: paths.appBuild,
         filename: 'js/[id].[contenthash].js',
@@ -56,9 +75,20 @@ const commonConfig = {
                 ]
             },
             {
-                test: /\.(pug|jade|tpl)$/,
-                loader: 'pug-loader',
-                options: {}
+                test: /\.(pug|jade)$/,
+                oneOf: [
+                    {
+                        resourceQuery: /^\?vue/,
+                        use: ['pug-plain-loader']
+                    },
+                    {
+                        use: ['raw-loader', 'pug-plain-loader']
+                    }
+                ]
+            },
+            {
+                test: /\.vue$/,
+                use: ['vue-loader']
             },
             {
                 test: /\.css$/,
@@ -135,6 +165,7 @@ const commonConfig = {
     plugins: [
         new ForkTsCheckerWebpackPlugin(),
         new ESLintPlugin(),
+        new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
             filename: isProductionMode
                 ? `css/[id].[contenthash].css`
@@ -144,11 +175,23 @@ const commonConfig = {
                 : `css/[path]/[name]_[hash:base64:5].css`,
             ignoreOrder: true
         }),
-        new HtmlWebpackPlugin({
-            template: paths.appHtml,
-            inject: 'body',
-            title: 'React'
+        ...entries.map(entry => {
+            return new HtmlWebpackPlugin({
+                inject: 'body',
+                minify: {
+                    minifyJS: true,
+                    minifyCSS: true
+                },
+                chunks: [entry.name],
+                template: entry.tpl,
+                filename: entry.html
+            });
         })
+        // new HtmlWebpackPlugin({
+        //     template: paths.appHtml,
+        //     inject: 'body',
+        //     title: 'React'
+        // })
     ]
 };
 

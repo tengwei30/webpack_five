@@ -30,4 +30,4 @@ mixin viewport (designWidth, legend, maxWidth)
       window.addEventListener('resize', adjustFontSize);
       document.addEventListener('DOMContentLoaded', reviseLegend);
       document.documentElement.setAttribute('data-dpr', Math.floor(window.devicePixelRatio));
-  })(#{designWidth}, #{legend}, #{maxWidth});
+    })(#{designWidth}, #{legend}, #{maxWidth});
