@@ -37,10 +37,6 @@ const commonConfig = {
         }),
         {}
     ),
-    // entry: {
-    //     polyfills: resolve('src/polyfills'), // 对不支持ES6的浏览器进行支持
-    //     index: paths.appIndexJs
-    // },
     output: {
         path: paths.appBuild,
         filename: 'js/[id].[contenthash].js',
@@ -158,7 +154,7 @@ const commonConfig = {
     resolve: {
         extensions: paths.moduleFileExtensions,
         alias: {
-            src: resolve(__dirname, '../../src'),
+            '@': resolve(__dirname, '../../src'),
             assets: resolve(__dirname, '../../assets')
         }
     },
@@ -187,11 +183,6 @@ const commonConfig = {
                 filename: entry.html
             });
         })
-        // new HtmlWebpackPlugin({
-        //     template: paths.appHtml,
-        //     inject: 'body',
-        //     title: 'React'
-        // })
     ]
 };
 
